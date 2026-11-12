@@ -1,0 +1,16 @@
+.git
+.gitattributes
+.gitignore
+.env
+*.log
+__pycache__/
+*.pyc
+.venv/
+venv/
+WeChatTextExport/
+WeChatWin_*.exe
+*.mp4
+*.xlsx
+*.pptx
+*.pdf
+~*

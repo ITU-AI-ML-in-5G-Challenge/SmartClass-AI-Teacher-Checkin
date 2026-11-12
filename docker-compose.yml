@@ -1,0 +1,72 @@
+# OPEA-flavoured local deployment for SmartClass AI Tracker & Reviewer.
+#
+#   docker compose up --build           # build + run the app image (OPEA demo)
+#   docker compose --profile opea up    # also start the optional OPEA services
+#
+# The optional OPEA services below map to the standard GenAIComps
+# microservices (https://github.com/opea-project/GenAIComps) from the
+# OPEA project — https://opea.dev/ — and are included for reference;
+# adjust the image tags to the versions documented there.
+
+services:
+  checkin-app:
+    build: .
+    image: smartclass-ai-teacher-checkin:latest
+    container_name: smartclass-checkin
+    environment:
+      - OPEA_EMBEDDING_URL=${OPEA_EMBEDDING_URL:-http://embedding:6000/v1/embeddings}
+      - OPEA_LLM_URL=${OPEA_LLM_URL:-http://llm:9000/v1/chat/completions}
+      - OPEA_RERANK_URL=${OPEA_RERANK_URL:-http://rerank:8000/v1/reranking}
+      - OPEA_RETRIEVER_URL=${OPEA_RETRIEVER_URL:-http://retriever:7000/v1/retrieval}
+      - OPEA_DATAPREP_URL=${OPEA_DATAPREP_URL:-http://dataprep:6007/v1/dataprep}
+      - OPEA_GUARDRAILS_URL=${OPEA_GUARDRAILS_URL:-http://guardrails:9090/v1/guardrails}
+      - OPEA_ASR_URL=${OPEA_ASR_URL:-http://asr:9099/v1/audio/transcriptions}
+      - OPEA_TTS_URL=${OPEA_TTS_URL:-http://tts:9080/v1/audio/speech}
+      - OPEA_WEB_RETRIEVER_URL=${OPEA_WEB_RETRIEVER_URL:-http://web-retriever:7070/v1/web_search}
+    profiles: ["default"]
+
+  # ---- optional OPEA GenAIComps microservices ----
+  embedding:
+    image: ghcr.io/opea-project/embedding:latest
+    profiles: ["opea"]
+    ports: ["6000:6000"]
+
+  llm:
+    image: ghcr.io/opea-project/llm-vllm:latest
+    profiles: ["opea"]
+    ports: ["9000:9000"]
+
+  rerank:
+    image: ghcr.io/opea-project/reranking:latest
+    profiles: ["opea"]
+    ports: ["8000:8000"]
+
+  retriever:
+    image: ghcr.io/opea-project/retriever:latest
+    profiles: ["opea"]
+    ports: ["7000:7000"]
+
+  dataprep:
+    image: ghcr.io/opea-project/dataprep:latest
+    profiles: ["opea"]
+    ports: ["6007:6007"]
+
+  guardrails:
+    image: ghcr.io/opea-project/guardrails:latest
+    profiles: ["opea"]
+    ports: ["9090:9090"]
+
+  asr:
+    image: ghcr.io/opea-project/asr:latest
+    profiles: ["opea"]
+    ports: ["9099:9099"]
+
+  tts:
+    image: ghcr.io/opea-project/tts:latest
+    profiles: ["opea"]
+    ports: ["9080:9080"]
+
+  web-retriever:
+    image: ghcr.io/opea-project/web-retriever:latest
+    profiles: ["opea"]
+    ports: ["7070:7070"]

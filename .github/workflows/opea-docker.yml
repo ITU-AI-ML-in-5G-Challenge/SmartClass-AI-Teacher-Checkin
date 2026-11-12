@@ -1,0 +1,28 @@
+name: OPEA integration smoke test
+
+on:
+  push:
+    paths:
+      - "opea_*.py"
+      - "Dockerfile"
+      - "docker-compose.yml"
+      - "OPEA.md"
+      - "requirements.txt"
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Compile-check OPEA modules
+        run: python -m py_compile opea_config.py opea_integration.py opea_components.py opea_rag.py opea_examples.py opea_demo.py
+
+      - name: Run OPEA demo (graceful without services)
+        run: python opea_demo.py

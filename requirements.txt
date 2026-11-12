@@ -1,0 +1,15 @@
+pandas==3.0.3
+openpyxl==3.1.5
+xlwings==0.36.8
+# WeChat automation: wxauto4 for 4.x. No version pin: author removes old versions from PyPI, install latest.
+wxauto4
+pyautogui==0.9.54
+pywin32==312
+pillow==12.3.0
+websocket-client==1.9.0
+dashscope==1.26.3
+python-dotenv==1.2.2
+requests==2.34.2
+openai==2.45.0
+uiautomation==2.0.29
+pywinauto==0.6.9
